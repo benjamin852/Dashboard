@@ -11,11 +11,15 @@
     "react-dom": "^16.13.0",
     "react-scripts": "3.4.0"
   },
+  "devDependencies": {
+    "json-server": "^0.16.1"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "npx json-server --watch src/db.json --port 3004"
   },
   "eslintConfig": {
     "extends": "react-app"

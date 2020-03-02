@@ -16,6 +16,12 @@ const useStyles = makeStyles({
   }
 });
 
+/*
+TODO:
+dividers -> for expanding
+focus points -> for increased ux
+*/
+
 export default function Dashbaord() {
   const classes = useStyles();
 
