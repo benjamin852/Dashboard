@@ -8,9 +8,9 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import MetaverseImage from ".././assets/metaverse-image.jpg";
+import MetaverseImage from "../../assets/metaverse-image.jpg";
 import TextField from "@material-ui/core/TextField";
-import fetchData from "../utils/fetchData";
+// import fetchData from "../utils/fetchData";
 import EditIcon from "@material-ui/icons/Edit";
 
 const useStyles = makeStyles({
