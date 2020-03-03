@@ -37,12 +37,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-/*
-TODO:
-dividers -> for expanding
-focus points -> for increased ux
-*/
-
 const DashboardItem = () => {
   const [allBots, setAllBots] = useState([]);
   const [botStatus, setBotStatus] = useState(true);
@@ -73,13 +67,18 @@ const DashboardItem = () => {
     setExpanded(!expanded);
   };
 
+  const save = () => {
+    setEditState(false);
+  };
+
   return (
     <Card
       className={`${classes.root} ${botStatus ? "bot-running" : "bot-paused"}`}
     >
       <CardHeader
         avatar={<Avatar aria-label="recipe">R</Avatar>}
-        action={<EditIcon onClick={editStrategy} />}
+        action={!editState ? <EditIcon onClick={editStrategy} /> : null}
+        titleTypographyProps={{ variant: "h5" }}
         title="Strategy Results"
         subheader="September 14, 2019 - March 2, 2020"
       />
@@ -109,16 +108,6 @@ const DashboardItem = () => {
             disabled={editState ? false : true}
           />
         </CardContent>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
       </CardActionArea>
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -146,14 +135,26 @@ const DashboardItem = () => {
         </CardContent>
       </Collapse>
 
-      <CardActions>
+      <CardActions disableSpacing>
         {editState ? (
-          <Button color="primary">SAVE!</Button>
+          <Button onClick={save} color="primary">
+            SAVE!
+          </Button>
         ) : botStatus ? (
           <Button color="red">STOP</Button>
         ) : (
           <Button color="green">RUN</Button>
         )}
+        <IconButton
+          className={clsx(classes.expand, {
+            [classes.expandOpen]: expanded
+          })}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+        >
+          {/* {expanded ? "Show Less" : "Show More"} */}
+          <ExpandMoreIcon />
+        </IconButton>
       </CardActions>
     </Card>
   );
