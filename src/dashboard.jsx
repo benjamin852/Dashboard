@@ -28,6 +28,7 @@ focus points -> for increased ux
 export default function Dashbaord() {
   let [allBots, setAllBots] = useState([]);
   let [editState, setEditState] = useState(false);
+
   useEffect(() => {
     // fetchData("http://localhost:3000/threads", {}).then(result => {
     //   console.log(result);
@@ -46,9 +47,7 @@ export default function Dashbaord() {
 
   const classes = useStyles();
 
-  const editStrategy = () => {
-    console.log("print the newest wazy");
-  };
+  const editStrategy = () => setEditState(!editState);
 
   return (
     <Card className={classes.root}>
@@ -66,22 +65,27 @@ export default function Dashbaord() {
           title="Contemplative Reptile"
         />
         <CardContent>
-          <TextField defaultValue="Result #1" disabled={true} />
+          <TextField
+            defaultValue="Result #1"
+            disabled={editState ? true : false}
+          />
           <br />
           <br />
-          <TextField defaultValue="Result #2" disabled={true} />
+          <TextField
+            defaultValue="Result #2"
+            disabled={editState ? true : false}
+          />
           <br />
           <br />
-          <TextField defaultValue="Result #3" disabled={true} />
+          <TextField
+            defaultValue="Result #3"
+            disabled={editState ? true : false}
+          />
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
-          Button 1
-        </Button>
-        <Button size="small" color="primary">
-          Button 2
-        </Button>
+        <Button color="primary">Button 1</Button>
+        <Button color="primary">Button 2</Button>
       </CardActions>
     </Card>
   );
