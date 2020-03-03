@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
+import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
@@ -10,6 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import MetaverseImage from "./assets/metaverse-image.jpg";
 import TextField from "@material-ui/core/TextField";
 import fetchData from "./utils/fetchData";
+import EditIcon from "@material-ui/icons/Edit";
 
 const useStyles = makeStyles({
   root: {
@@ -25,6 +27,7 @@ focus points -> for increased ux
 
 export default function Dashbaord() {
   let [allBots, setAllBots] = useState([]);
+  let [editState, setEditState] = useState(false);
   useEffect(() => {
     // fetchData("http://localhost:3000/threads", {}).then(result => {
     //   console.log(result);
@@ -43,8 +46,17 @@ export default function Dashbaord() {
 
   const classes = useStyles();
 
+  const editStrategy = () => {
+    console.log("print the newest wazy");
+  };
+
   return (
     <Card className={classes.root}>
+      <CardHeader
+        action={<EditIcon onClick={editStrategy} />}
+        title="Strategy Results"
+        subheader="September 14, 2019 - March 2, 2020"
+      />
       <CardActionArea>
         <CardMedia
           component="img"
@@ -54,16 +66,13 @@ export default function Dashbaord() {
           title="Contemplative Reptile"
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            Strategy Number
-          </Typography>
-          <TextField defaultValue="Result #1" disabled="true" />
+          <TextField defaultValue="Result #1" disabled={true} />
           <br />
           <br />
-          <TextField defaultValue="Result #2" disabled="true" />
+          <TextField defaultValue="Result #2" disabled={true} />
           <br />
           <br />
-          <TextField defaultValue="Result #3" disabled="true" />
+          <TextField defaultValue="Result #3" disabled={true} />
         </CardContent>
       </CardActionArea>
       <CardActions>
