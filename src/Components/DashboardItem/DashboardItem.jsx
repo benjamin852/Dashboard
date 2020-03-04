@@ -69,10 +69,10 @@ const DashboardItem = props => {
         className={`${classes.root} ${botState ? "bot-running" : "bot-paused"}`}
       >
         <CardHeader
-          avatar={<Avatar aria-label="recipe">R</Avatar>}
+          avatar={<Avatar aria-label="recipe">123</Avatar>}
           action={!editState ? <EditIcon onClick={editStrategy} /> : null}
           titleTypographyProps={{ variant: "h5" }}
-          title="Strategy Results"
+          title="--Bot ID--"
           subheader={`Bot ID: ${props.botData.threadUuid}`}
         />
         <CardMedia
@@ -84,18 +84,22 @@ const DashboardItem = props => {
         />
         <CardContent>
           <TextField
+            fullWidth
             defaultValue={`Thread Strategy: ${props.botData.threadStrategy}`}
             disabled={editState ? false : true}
           />
           <br />
           <br />
           <TextField
+            fullWidth
+            multiline
             defaultValue={`Trading Since: ${props.botData.threadStartTime}`}
             disabled={editState ? false : true}
           />
           <br />
           <br />
           <TextField
+            fullWidth
             defaultValue={`End Time: ${
               props.threadEndTime ? props.threadEndTime : `Ongoing Bot`
             }`}
@@ -106,42 +110,49 @@ const DashboardItem = props => {
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
             <TextField
+              fullWidth
               defaultValue={`Min Sleep Interval: ${props.botData.threadConfig.minSleepInterval}`}
               disabled={editState ? false : true}
             />{" "}
             <br />
             <br />
             <TextField
+              fullWidth
               defaultValue={`Max Sleep Interval: ${props.botData.threadConfig.maxSleepInterval}`}
               disabled={editState ? false : true}
             />
             <br />
             <br />
             <TextField
+              fullWidth
               defaultValue={`Exchange Name: ${props.botData.threadConfig.exchangeName}`}
               disabled={editState ? false : true}
             />
             <br />
             <br />
             <TextField
+              fullWidth
               defaultValue={`Counter: ${props.botData.threadConfig.counter}`}
               disabled={editState ? false : true}
             />
             <br />
             <br />
             <TextField
+              fullWidth
               defaultValue={`Base: ${props.botData.threadConfig.base}`}
               disabled={editState ? false : true}
             />
             <br />
             <br />
             <TextField
+              fullWidth
               defaultValue={`Max Amount: ${props.botData.threadConfig.maxAmount}`}
               disabled={editState ? false : true}
             />
             <br />
             <br />
             <TextField
+              fullWidth
               defaultValue={`Price Percentage: ${props.botData.threadConfig
                 .pricePercentage * 100}%`}
               disabled={editState ? false : true}
