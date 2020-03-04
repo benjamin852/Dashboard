@@ -128,7 +128,7 @@ const DashboardItem = props => {
 
         <CardActions disableSpacing>
           {editState ? (
-            <Button onClick={save} color="primary">
+            <Button onClick={save} variant="contained" color="primary">
               SAVE!
             </Button>
           ) : botStatus ? (
