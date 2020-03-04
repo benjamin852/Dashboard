@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const DashboardItem = props => {
-  const [botStatus, setBotStatus] = useState(true);
+  const [botState, setBotState] = useState(true);
   const [editState, setEditState] = useState(false);
   const [expanded, setExpanded] = React.useState(false);
 
@@ -49,22 +49,23 @@ const DashboardItem = props => {
     console.log(props.botData);
   }, []);
 
-  const editStrategy = () => setEditState(!editState);
+  const editStrategy = () => {
+    setEditState(!editState);
+    setBotState(false);
+  };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  const save = () => {
-    setEditState(false);
-  };
+  const save = () => setEditState(false);
+  const stopBot = () => setBotState(false);
+  const startBot = () => setBotState(true);
 
   return (
     <Grid item xs={12} md={4}>
       <Card
-        className={`${classes.root} ${
-          botStatus ? "bot-running" : "bot-paused"
-        }`}
+        className={`${classes.root} ${botState ? "bot-running" : "bot-paused"}`}
       >
         <CardHeader
           avatar={<Avatar aria-label="recipe">R</Avatar>}
@@ -131,12 +132,14 @@ const DashboardItem = props => {
             <Button onClick={save} variant="contained" color="primary">
               SAVE!
             </Button>
-          ) : botStatus ? (
-            <Button variant="contained" color="secondary">
+          ) : botState ? (
+            <Button onClick={stopBot} variant="contained" color="secondary">
               STOP
             </Button>
           ) : (
-            <Button color="green">RUN</Button>
+            <Button onClick={startBot} variant="contained" color="green">
+              RUN
+            </Button>
           )}
           <IconButton
             className={clsx(classes.expand, {
