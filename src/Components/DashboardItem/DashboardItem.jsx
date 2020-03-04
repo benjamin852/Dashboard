@@ -138,7 +138,7 @@ const DashboardItem = props => {
             </Button>
           ) : (
             <Button onClick={startBot} variant="contained" color="green">
-              RUN
+              START
             </Button>
           )}
           <IconButton
