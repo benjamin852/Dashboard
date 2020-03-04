@@ -75,64 +75,75 @@ const DashboardItem = props => {
           title="Strategy Results"
           subheader={`Bot ID: ${props.botData.threadUuid}`}
         />
-        <CardActionArea>
-          <CardMedia
-            component="img"
-            alt="Crypto Dashboard"
-            height="140"
-            image={MetaverseImage}
-            title="Contemplative Reptile"
+        <CardMedia
+          component="img"
+          alt="Crypto Dashboard"
+          height="140"
+          image={MetaverseImage}
+          title="Contemplative Reptile"
+        />
+        <CardContent>
+          <TextField
+            defaultValue={`Thread Strategy: ${props.botData.threadStrategy}`}
+            disabled={editState ? false : true}
           />
-          <CardContent>
-            <TextField
-              defaultValue={`Thread Strategy: ${props.botData.threadStrategy}`}
-              disabled={editState ? false : true}
-            />
-            <br />
-            <br />
-            <TextField
-              defaultValue={`Trading Since: ${props.threadStartTime}`}
-              disabled={editState ? false : true}
-            />
-            <br />
-            <br />
-            <TextField
-              defaultValue={`End Time: ${
-                props.threadEndTime ? props.threadEndTime : `Ongoing Bot`
-              }`}
-              disabled={editState ? false : true}
-            />
-          </CardContent>
-        </CardActionArea>
+          <br />
+          <br />
+          <TextField
+            defaultValue={`Trading Since: ${props.botData.threadStartTime}`}
+            disabled={editState ? false : true}
+          />
+          <br />
+          <br />
+          <TextField
+            defaultValue={`End Time: ${
+              props.threadEndTime ? props.threadEndTime : `Ongoing Bot`
+            }`}
+            disabled={editState ? false : true}
+          />
+        </CardContent>
 
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
             <TextField
-              defaultValue={`Min Sleep Interval: ${props.threadConfig.minSleepInterval}`}
+              defaultValue={`Min Sleep Interval: ${props.botData.threadConfig.minSleepInterval}`}
               disabled={editState ? false : true}
             />{" "}
+            <br />
+            <br />
             <TextField
-              defaultValue={`Max Sleep Interval: ${props.threadConfig.maxSleepInterval}`}
+              defaultValue={`Max Sleep Interval: ${props.botData.threadConfig.maxSleepInterval}`}
               disabled={editState ? false : true}
             />
+            <br />
+            <br />
             <TextField
-              defaultValue={`Exchange Name: ${props.threadConfig.exchangeName}`}
+              defaultValue={`Exchange Name: ${props.botData.threadConfig.exchangeName}`}
               disabled={editState ? false : true}
             />
+            <br />
+            <br />
             <TextField
-              defaultValue={`Counter: ${props.threadConfig.counter}`}
+              defaultValue={`Counter: ${props.botData.threadConfig.counter}`}
               disabled={editState ? false : true}
             />
+            <br />
+            <br />
             <TextField
-              defaultValue={`Base: ${props.threadConfig.base}`}
+              defaultValue={`Base: ${props.botData.threadConfig.base}`}
               disabled={editState ? false : true}
             />
+            <br />
+            <br />
             <TextField
-              defaultValue={`Max Amount: ${props.threadConfig.maxAmount}`}
+              defaultValue={`Max Amount: ${props.botData.threadConfig.maxAmount}`}
               disabled={editState ? false : true}
             />
+            <br />
+            <br />
             <TextField
-              defaultValue={`Price Percentage: ${props.threadConfig.pricePercentage}`}
+              defaultValue={`Price Percentage: ${props.botData.threadConfig
+                .pricePercentage * 100}%`}
               disabled={editState ? false : true}
             />
           </CardContent>
