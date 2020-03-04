@@ -1,20 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
-import CardHeader from "@material-ui/core/CardHeader";
+import Typography from "@material-ui/core/Typography";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
-import Icon from "@material-ui/core/Icon";
-import { green } from "@material-ui/core/colors";
-import fetchData from "../utils/fetchData";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
 
-const useStyles = makeStyles({
+import fetchData from "../utils/fetchData";
+import Grid from "@material-ui/core/Grid";
+
+const useStyles = makeStyles(theme => ({
   root: {
     maxWidth: 345
+  },
+  margin: {
+    margin: theme.spacing(1)
+  },
+  addIcon: {
+    marginRight: theme.spacing(1)
+  },
+  relative: {
+    position: "relative"
+  },
+  plusButton: {
+    position: "absolute",
+    left: "50%",
+    top: "50%",
+    transform: "translate(-50%, -50%)"
   }
-});
+}));
 
 const NewBot = () => {
   const [availableBots, setAvailableBots] = useState([]);
@@ -41,16 +58,31 @@ const NewBot = () => {
   const classes = useStyles();
 
   return (
-    <>
-      <Button color="red" style={{ backgroundColor: "red" }}>
-        <Icon
-          className="fa fa-plus-circle"
-          style={{ fontSize: 30, color: green[500] }}
+    <Grid item xs={12} md={4}>
+      <Card className={`${classes.root} ${classes.relative}`}>
+        <CardActionArea>
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              Start a New Bot
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions>
+          <Button size="small" color="primary">
+            Start
+          </Button>
+        </CardActions>
+        <Fab
+          variant="extended"
+          color="primary"
+          aria-label="add"
+          className={(classes.margin, classes.plusButton)}
         >
-          add_circle
-        </Icon>
-      </Button>
-    </>
+          <AddIcon className={classes.addIcon} />
+          Extended
+        </Fab>
+      </Card>
+    </Grid>
   );
 };
 
