@@ -8,6 +8,9 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
+import Select from "@material-ui/core/Select";
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import fetchData from "../utils/fetchData";
 import Grid from "@material-ui/core/Grid";
@@ -66,6 +69,17 @@ const NewBot = () => {
             <Typography gutterBottom variant="h5" component="h2">
               Start a New Bot
             </Typography>
+            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={32}
+              // onChange={}
+            >
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={20}>Twenty</MenuItem>
+              <MenuItem value={30}>Thirty</MenuItem>
+            </Select>
           </CardContent>
         </CardActionArea>
         <CardActions>
