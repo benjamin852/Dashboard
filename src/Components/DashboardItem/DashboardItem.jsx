@@ -19,6 +19,7 @@ import Grid from "@material-ui/core/Grid";
 import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { green } from "@material-ui/core/colors";
 
 import "./DashboardItem.css";
 
@@ -72,7 +73,7 @@ const DashboardItem = props => {
           action={!editState ? <EditIcon onClick={editStrategy} /> : null}
           titleTypographyProps={{ variant: "h5" }}
           title="Strategy Results"
-          subheader={props.botData.threadUuid}
+          subheader={`Bot ID: ${props.botData.threadUuid}`}
         />
         <CardActionArea>
           <CardMedia
@@ -84,19 +85,21 @@ const DashboardItem = props => {
           />
           <CardContent>
             <TextField
-              defaultValue="Result #1"
+              defaultValue={`Thread Strategy: ${props.botData.threadStrategy}`}
               disabled={editState ? false : true}
             />
             <br />
             <br />
             <TextField
-              defaultValue="Result #2"
+              defaultValue={`Trading Since: ${props.threadStartTime}`}
               disabled={editState ? false : true}
             />
             <br />
             <br />
             <TextField
-              defaultValue="Result #3"
+              defaultValue={`End Time: ${
+                props.threadEndTime ? props.threadEndTime : `Ongoing Bot`
+              }`}
               disabled={editState ? false : true}
             />
           </CardContent>
@@ -105,23 +108,31 @@ const DashboardItem = props => {
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
             <TextField
-              defaultValue="Result #4"
+              defaultValue={`Min Sleep Interval: ${props.threadConfig.minSleepInterval}`}
               disabled={editState ? false : true}
             />{" "}
             <TextField
-              defaultValue="Result #5"
+              defaultValue={`Max Sleep Interval: ${props.threadConfig.maxSleepInterval}`}
               disabled={editState ? false : true}
             />
             <TextField
-              defaultValue="Result #6"
+              defaultValue={`Exchange Name: ${props.threadConfig.exchangeName}`}
               disabled={editState ? false : true}
             />
             <TextField
-              defaultValue="Result #7"
+              defaultValue={`Counter: ${props.threadConfig.counter}`}
               disabled={editState ? false : true}
             />
             <TextField
-              defaultValue="Result #8"
+              defaultValue={`Base: ${props.threadConfig.base}`}
+              disabled={editState ? false : true}
+            />
+            <TextField
+              defaultValue={`Max Amount: ${props.threadConfig.maxAmount}`}
+              disabled={editState ? false : true}
+            />
+            <TextField
+              defaultValue={`Price Percentage: ${props.threadConfig.pricePercentage}`}
               disabled={editState ? false : true}
             />
           </CardContent>
@@ -137,7 +148,11 @@ const DashboardItem = props => {
               STOP
             </Button>
           ) : (
-            <Button onClick={startBot} variant="contained" color="green">
+            <Button
+              onClick={startBot}
+              variant="contained"
+              style={{ color: green }}
+            >
               START
             </Button>
           )}
