@@ -13,6 +13,7 @@ import clsx from "clsx";
 import MetaverseImage from "../../assets/metaverse-image.jpg";
 import TextField from "@material-ui/core/TextField";
 import Collapse from "@material-ui/core/Collapse";
+import Grid from "@material-ui/core/Grid";
 
 // import fetchData from "../utils/fetchData";
 import EditIcon from "@material-ui/icons/Edit";
@@ -37,29 +38,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const DashboardItem = () => {
-  const [allBots, setAllBots] = useState([]);
+const DashboardItem = props => {
   const [botStatus, setBotStatus] = useState(true);
   const [editState, setEditState] = useState(false);
   const [expanded, setExpanded] = React.useState(false);
 
-  useEffect(() => {
-    // fetchData("http://localhost:3000/threads", {}).then(result => {
-    //   console.log(result);
-    // });
-    fetch("http://localhost:3004/threads", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        setAllBots(data);
-      });
-  }, []);
-
   const classes = useStyles();
+
+  useEffect(() => {
+    console.log(props.botData);
+  }, []);
 
   const editStrategy = () => setEditState(!editState);
 
@@ -72,91 +60,97 @@ const DashboardItem = () => {
   };
 
   return (
-    <Card
-      className={`${classes.root} ${botStatus ? "bot-running" : "bot-paused"}`}
-    >
-      <CardHeader
-        avatar={<Avatar aria-label="recipe">R</Avatar>}
-        action={!editState ? <EditIcon onClick={editStrategy} /> : null}
-        titleTypographyProps={{ variant: "h5" }}
-        title="Strategy Results"
-        subheader="September 14, 2019 - March 2, 2020"
-      />
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          alt="Crypto Dashboard"
-          height="140"
-          image={MetaverseImage}
-          title="Contemplative Reptile"
+    <Grid item xs={12} md={4}>
+      <Card
+        className={`${classes.root} ${
+          botStatus ? "bot-running" : "bot-paused"
+        }`}
+      >
+        <CardHeader
+          avatar={<Avatar aria-label="recipe">R</Avatar>}
+          action={!editState ? <EditIcon onClick={editStrategy} /> : null}
+          titleTypographyProps={{ variant: "h5" }}
+          title="Strategy Results"
+          subheader={props.botData.threadUuid}
         />
-        <CardContent>
-          <TextField
-            defaultValue="Result #1"
-            disabled={editState ? false : true}
+        <CardActionArea>
+          <CardMedia
+            component="img"
+            alt="Crypto Dashboard"
+            height="140"
+            image={MetaverseImage}
+            title="Contemplative Reptile"
           />
-          <br />
-          <br />
-          <TextField
-            defaultValue="Result #2"
-            disabled={editState ? false : true}
-          />
-          <br />
-          <br />
-          <TextField
-            defaultValue="Result #3"
-            disabled={editState ? false : true}
-          />
-        </CardContent>
-      </CardActionArea>
+          <CardContent>
+            <TextField
+              defaultValue="Result #1"
+              disabled={editState ? false : true}
+            />
+            <br />
+            <br />
+            <TextField
+              defaultValue="Result #2"
+              disabled={editState ? false : true}
+            />
+            <br />
+            <br />
+            <TextField
+              defaultValue="Result #3"
+              disabled={editState ? false : true}
+            />
+          </CardContent>
+        </CardActionArea>
 
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <TextField
-            defaultValue="Result #4"
-            disabled={editState ? false : true}
-          />{" "}
-          <TextField
-            defaultValue="Result #5"
-            disabled={editState ? false : true}
-          />
-          <TextField
-            defaultValue="Result #6"
-            disabled={editState ? false : true}
-          />
-          <TextField
-            defaultValue="Result #7"
-            disabled={editState ? false : true}
-          />
-          <TextField
-            defaultValue="Result #8"
-            disabled={editState ? false : true}
-          />
-        </CardContent>
-      </Collapse>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <TextField
+              defaultValue="Result #4"
+              disabled={editState ? false : true}
+            />{" "}
+            <TextField
+              defaultValue="Result #5"
+              disabled={editState ? false : true}
+            />
+            <TextField
+              defaultValue="Result #6"
+              disabled={editState ? false : true}
+            />
+            <TextField
+              defaultValue="Result #7"
+              disabled={editState ? false : true}
+            />
+            <TextField
+              defaultValue="Result #8"
+              disabled={editState ? false : true}
+            />
+          </CardContent>
+        </Collapse>
 
-      <CardActions disableSpacing>
-        {editState ? (
-          <Button onClick={save} color="primary">
-            SAVE!
-          </Button>
-        ) : botStatus ? (
-          <Button color="red">STOP</Button>
-        ) : (
-          <Button color="green">RUN</Button>
-        )}
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-        >
-          {/* {expanded ? "Show Less" : "Show More"} */}
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
-    </Card>
+        <CardActions disableSpacing>
+          {editState ? (
+            <Button onClick={save} color="primary">
+              SAVE!
+            </Button>
+          ) : botStatus ? (
+            <Button variant="contained" color="secondary">
+              STOP
+            </Button>
+          ) : (
+            <Button color="green">RUN</Button>
+          )}
+          <IconButton
+            className={clsx(classes.expand, {
+              [classes.expandOpen]: expanded
+            })}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+          >
+            {/* {expanded ? "Show Less" : "Show More"} */}
+            <ExpandMoreIcon />
+          </IconButton>
+        </CardActions>
+      </Card>
+    </Grid>
   );
 };
 
