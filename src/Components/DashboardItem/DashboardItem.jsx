@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import Avatar from "@material-ui/core/Avatar";
@@ -39,6 +39,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const StartButton = withStyles(theme => ({
+  root: {
+    color: theme.palette.getContrastText(green[500]),
+    backgroundColor: green[500],
+    "&:hover": {
+      backgroundColor: green[700]
+    }
+  }
+}))(Button);
+
 const DashboardItem = props => {
   const [botState, setBotState] = useState(true);
   const [editState, setEditState] = useState(false);
@@ -61,7 +71,10 @@ const DashboardItem = props => {
 
   const save = () => setEditState(false);
   const stopBot = () => setBotState(false);
-  const startBot = () => setBotState(true);
+  const startBot = () => {
+    setBotState(true);
+    console.log("wazy");
+  };
 
   return (
     <Grid item xs={12} md={4}>
@@ -170,13 +183,9 @@ const DashboardItem = props => {
               STOP
             </Button>
           ) : (
-            <Button
-              onClick={startBot}
-              variant="contained"
-              style={{ color: green }}
-            >
+            <StartButton onClick={startBot} variant="contained">
               START
-            </Button>
+            </StartButton>
           )}
           <IconButton
             className={clsx(classes.expand, {

@@ -39,6 +39,7 @@ const NewBot = () => {
 
   useEffect(() => {
     fetchData("http://mm.mvsfans.org:10082/threads/query/status", {
+      //body
       uuid: "dac947e4-ba20-4813-8c96-8e0b63d06e65"
     }).then(result => {
       console.log(result);
