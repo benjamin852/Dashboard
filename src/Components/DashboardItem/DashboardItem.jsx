@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import Avatar from "@material-ui/core/Avatar";
 import CardActions from "@material-ui/core/CardActions";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -14,8 +13,7 @@ import MetaverseImage from "../../assets/metaverse-image.jpg";
 import TextField from "@material-ui/core/TextField";
 import Collapse from "@material-ui/core/Collapse";
 import Grid from "@material-ui/core/Grid";
-
-// import fetchData from "../utils/fetchData";
+import fetchData from "../../utils/fetchData";
 import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -56,10 +54,6 @@ const DashboardItem = props => {
 
   const classes = useStyles();
 
-  useEffect(() => {
-    console.log(props.botData);
-  }, []);
-
   const editStrategy = () => {
     setEditState(!editState);
     setBotState(false);
@@ -73,7 +67,22 @@ const DashboardItem = props => {
   const stopBot = () => setBotState(false);
   const startBot = () => {
     setBotState(true);
-    console.log("wazy");
+    fetchData("http://mm.mvsfans.org:10082/strategies/start/dummy", {
+      exchangeName: "biki",
+      apiKey: "104529b659e4e7227fb767e5d4b7a03f",
+      signature: "ba0eba924f87aaeeb9ebee07f0aa3714",
+      base: "DNA",
+      counter: "BTC",
+      pricePercentage: 0.2,
+      priceLever: 0,
+      minAmount: 1,
+      maxAmount: 3,
+      minSleepInterval: 10000,
+      maxSleepInterval: 20000,
+      retryTimes: 1
+    }).then(result => {
+      console.log(result);
+    });
   };
 
   return (
