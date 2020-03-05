@@ -10,17 +10,15 @@ import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import clsx from "clsx";
 
-import MetaverseImage from "../../assets/metaverse-image.jpg";
+import MetaverseImage from "../assets/metaverse-image.jpg";
 import TextField from "@material-ui/core/TextField";
 import Collapse from "@material-ui/core/Collapse";
 import Grid from "@material-ui/core/Grid";
-import fetchData from "../../utils/fetchData";
+import fetchData from "../utils/fetchData";
 import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { green } from "@material-ui/core/colors";
-
-import "./DashboardItem.css";
 
 const useStyles = makeStyles(theme => ({
   root: {

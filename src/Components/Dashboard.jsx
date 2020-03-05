@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import DashboardItem from "./DashboardItem/DashboardItem";
+import DashboardItem from "./DashboardItem";
 import Grid from "@material-ui/core/Grid";
 import NewBot from "./NewBot";
 
