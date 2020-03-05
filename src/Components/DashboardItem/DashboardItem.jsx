@@ -64,7 +64,13 @@ const DashboardItem = props => {
   };
 
   const save = () => setEditState(false);
-  const stopBot = () => setBotState(false);
+  const stopBot = () => {
+    setBotState(false);
+    fetchData("http://mm.mvsfans.org:10082/strategies/stop/dummy", {
+      uuid: "dac947e4-ba20-4813-8c96-8e0b63d06e65",
+      cancelOrders: true
+    });
+  };
   const startBot = () => {
     setBotState(true);
     fetchData("http://mm.mvsfans.org:10082/strategies/start/dummy", {
