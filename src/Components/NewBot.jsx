@@ -71,17 +71,16 @@ const NewBot = () => {
   const [errors, setErrors] = useState([]);
 
   useEffect(() => {
-    setErrors([])
+    setErrors([]);
     fetchData("http://mm.mvsfans.org:10082/strategies/query/all", {
       //body
-    })
-      .then(result => {
-        console.log(result);
-        setAvailableBots(result);
-      })
-      .catch(error => {
-        setErrors([...errors, "Could not fetch Available Bots!"]);
-      });
+    }).then(result => {
+      console.log(result);
+      setAvailableBots(result);
+    });
+    // .catch(error => {
+    //   setErrors([...errors, "Could not fetch Available Bots!"]);
+    // });
     // fetch("http://localhost:3004/strategies", {
     //   method: "GET",
     //   headers: {
@@ -92,23 +91,22 @@ const NewBot = () => {
     //   .then(data => {
     //     setAvailableBots(data);
     //   });
-  }, [errors]);
+  }, []);
 
   useEffect(() => {
-    setErrors([])
+    setErrors([]);
     if (form) {
       fetchData("http://mm.mvsfans.org:10082/strategies/query/all", {
         //body
-      })
-        .then(result => {
-          console.log(result);
-          setAvailableBots(result);
-        })
-        .catch(error => {
-          setErrors([...errors, "Could not fetch Available Bots!"]);
-        });
+      }).then(result => {
+        console.log(result);
+        setAvailableBots(result);
+      });
+      // .catch(error => {
+      //   setErrors([...errors, "Could not fetch Available Bots!"]);
+      // });
     }
-  }, [errors, form]);
+  }, [form]);
 
   const classes = useStyles();
 
@@ -120,138 +118,139 @@ const NewBot = () => {
 
   return (
     <Grid item xs={12} md={4}>
-      <Card className={`${classes.root} ${classes.relative}`}>
-        {errors.length > 0
-          ? errors.map(err => (
-              <Alert
-                fullWidth
-                className={`${classes.root} ${classes.alert}`}
-                severity="error"
-              >
-                {err}
-              </Alert>
-            ))
-          : ""}
-        <CardActionArea
-          className={`${classes.transition} ${form ? "" : classes.blur}`}
-        >
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              Start a New Bot
-            </Typography>
-            <FormControl className={classes.formControl}>
-              <InputLabel id="demo-simple-select-label">
-                Select Strategy
-              </InputLabel>
-              <Select
-                className={classes.marginBottom}
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={""}
-                // onChange=
-              >
-                {availableBots
-                  ? availableBots.map(bot => (
-                      <MenuItem key={bot.strategyId} value={bot.strategyId}>
-                        {bot.strategyDescription}
-                      </MenuItem>
-                    ))
-                  : ""}
-              </Select>
-              <TextField
-                className={classes.marginBottom}
-                label="Retry Times"
-                id="standard-size-small"
-                size="small"
-              />
-              <TextField
-                className={classes.marginBottom}
-                label="API Key"
-                id="standard-size-small"
-                defaultValue="104529b659e4e7227fb767e5d4b7a03f"
-                size="small"
-              />
-              <TextField
-                className={classes.marginBottom}
-                label="Signature"
-                defaultValue="ba0eba924f87aaeeb9ebee07f0aa3714"
-                id="standard-size-small"
-                size="small"
-              />
-              <TextField
-                className={classes.marginBottom}
-                label="Price Lever"
-                id="standard-size-small"
-                size="small"
-              />
-              <TextField
-                className={classes.marginBottom}
-                label="Min Sleep Interval"
-                id="standard-size-small"
-                size="small"
-              />
-              <TextField
-                className={classes.marginBottom}
-                label="Max Sleep Interval"
-                id="standard-size-small"
-                size="small"
-              />
-              <TextField
-                className={classes.marginBottom}
-                label="Exchange Name"
-                id="standard-size-small"
-                size="small"
-              />
-              <TextField
-                className={classes.marginBottom}
-                label="Min Amount"
-                id="standard-size-small"
-                size="small"
-              />
-              <TextField
-                className={classes.marginBottom}
-                label="Max Amount"
-                id="standard-size-small"
-                size="small"
-              />
-              <TextField
-                className={classes.marginBottom}
-                label="Price Percentage"
-                id="standard-size-small"
-                size="small"
-              />
-              <TextField
-                className={classes.marginBottom}
-                label="Base"
-                id="standard-size-small"
-                size="small"
-              />
-            </FormControl>
-          </CardContent>
-        </CardActionArea>
-        <CardActions
-          className={`${classes.transition} ${form ? "" : classes.blur}`}
-        >
-          <Button onClick={submitNewBot} size="small" color="primary">
-            Start
-          </Button>
-          <Button onClick={() => setForm(false)} size="small" color="red">
-            CANCEL
-          </Button>
-        </CardActions>
-        <Fab
-          variant="extended"
-          color="primary"
-          aria-label="add"
-          onClick={showForm}
-          className={`${classes.plusButton} ${
-            form ? classes.displayNone : classes.zeroBlur
-          }`}
-        >
-          <AddIcon className={classes.addIcon} />
-          New Bot
-        </Fab>
-      </Card>
+      <form onSubmit={() => console.log("submit")}>
+        <Card className={`${classes.root} ${classes.relative}`}>
+          {errors.length > 0
+            ? errors.map(err => (
+                <Alert
+                  fullWidth
+                  className={`${classes.root} ${classes.alert}`}
+                  severity="error"
+                >
+                  {err}
+                </Alert>
+              ))
+            : ""}
+          <CardActionArea
+            className={`${classes.transition} ${form ? "" : classes.blur}`}
+          >
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                Start a New Bot
+              </Typography>
+              <FormControl className={classes.formControl}>
+                <InputLabel id="select-strategy-label">
+                  Select Strategy
+                </InputLabel>
+                <Select
+                  className={classes.marginBottom}
+                  labelId="select-strategy-label"
+                  id="select-strategy"
+                >
+                  {availableBots
+                    ? availableBots.map(bot => (
+                        <MenuItem key={bot.strategyId} value={bot.strategyId}>
+                          {bot.strategyDescription}
+                        </MenuItem>
+                      ))
+                    : ""}
+                </Select>
+
+                <TextField
+                  className={classes.marginBottom}
+                  label="Retry Times"
+                  id="standard-size-small"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
+                  label="API Key"
+                  id="standard-size-small"
+                  defaultValue="104529b659e4e7227fb767e5d4b7a03f"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
+                  label="Signature"
+                  defaultValue="ba0eba924f87aaeeb9ebee07f0aa3714"
+                  id="standard-size-small"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
+                  label="Price Lever"
+                  id="standard-size-small"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
+                  label="Min Sleep Interval"
+                  id="standard-size-small"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
+                  label="Max Sleep Interval"
+                  id="standard-size-small"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
+                  label="Exchange Name"
+                  id="standard-size-small"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
+                  label="Min Amount"
+                  id="standard-size-small"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
+                  label="Max Amount"
+                  id="standard-size-small"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
+                  label="Price Percentage"
+                  id="standard-size-small"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
+                  label="Base"
+                  id="standard-size-small"
+                  size="small"
+                />
+              </FormControl>
+            </CardContent>
+          </CardActionArea>
+          <CardActions
+            className={`${classes.transition} ${form ? "" : classes.blur}`}
+          >
+            <Button onClick={submitNewBot} size="small" color="primary">
+              Start
+            </Button>
+            <Button onClick={() => setForm(false)} size="small" color="red">
+              CANCEL
+            </Button>
+          </CardActions>
+          <Fab
+            variant="extended"
+            color="primary"
+            aria-label="add"
+            onClick={showForm}
+            className={`${classes.plusButton} ${
+              form ? classes.displayNone : classes.zeroBlur
+            }`}
+          >
+            <AddIcon className={classes.addIcon} />
+            New Bot
+          </Fab>
+        </Card>
+      </form>
     </Grid>
   );
 };
