@@ -6,8 +6,8 @@ import CardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
-// import Fab from "@material-ui/core/Fab";
-// import AddIcon from "@material-ui/icons/Add";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -42,6 +42,19 @@ const useStyles = makeStyles(theme => ({
   },
   marginBottom: {
     marginBottom: 5
+  },
+  blur: {
+    transition: "all 600ms",
+    filter: "blur(15px)"
+  },
+  zeroBlur: {
+    filter: "blur(0)"
+  },
+  displayNone: {
+    display: "none"
+  },
+  transition : {
+    transition : "all 600ms"
   }
 }));
 
@@ -50,11 +63,11 @@ const NewBot = () => {
   const [form, setForm] = useState(false);
 
   useEffect(() => {
-    fetchData("http://mm.mvsfans.org:10082/threads/query/status", {
+    fetchData("http://mm.mvsfans.org:10082/strategies/query/all", {
       //body
-      uuid: "dac947e4-ba20-4813-8c96-8e0b63d06e65"
     }).then(result => {
       console.log(result);
+      setAvailableBots(result);
     });
     // fetch("http://localhost:3004/strategies", {
     //   method: "GET",
@@ -68,12 +81,27 @@ const NewBot = () => {
     //   });
   }, []);
 
+  useEffect(() => {
+    fetchData("http://mm.mvsfans.org:10082/strategies/query/all", {
+      //body
+    }).then(result => {
+      console.log(result);
+      setAvailableBots(result);
+    });
+  }, [form]);
+
   const classes = useStyles();
+
+  const showForm = async event => {
+    setForm(true);
+  };
+
+  const submitNewBot = () => {};
 
   return (
     <Grid item xs={12} md={4}>
       <Card className={`${classes.root} ${classes.relative}`}>
-        <CardActionArea>
+        <CardActionArea className={`${classes.transition} ${form ? "" : classes.blur}`}>
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
               Start a New Bot
@@ -89,9 +117,11 @@ const NewBot = () => {
                 // value={age}
                 // onChange=
               >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                {availableBots.map(bot => (
+                  <MenuItem value={bot.strategyId}>
+                    {bot.strategyDescription}
+                  </MenuItem>
+                ))}
               </Select>
               <TextField
                 className={classes.marginBottom}
@@ -103,11 +133,13 @@ const NewBot = () => {
                 className={classes.marginBottom}
                 label="API Key"
                 id="standard-size-small"
+                defaultValue="104529b659e4e7227fb767e5d4b7a03f"
                 size="small"
               />
               <TextField
                 className={classes.marginBottom}
                 label="Signature"
+                defaultValue="ba0eba924f87aaeeb9ebee07f0aa3714"
                 id="standard-size-small"
                 size="small"
               />
@@ -156,7 +188,7 @@ const NewBot = () => {
             </FormControl>
           </CardContent>
         </CardActionArea>
-        <CardActions>
+        <CardActions className={`${classes.transition} ${form ? "" : classes.blur}`}>
           <Button size="small" color="primary">
             Start
           </Button>
@@ -164,15 +196,18 @@ const NewBot = () => {
             CANCEL
           </Button>
         </CardActions>
-        {/* <Fab
+        <Fab
           variant="extended"
           color="primary"
           aria-label="add"
-          className={(classes.margin, classes.plusButton)}
+          onClick={showForm}
+          className={`${classes.plusButton} ${
+            form ? classes.displayNone : classes.zeroBlur
+          }`}
         >
           <AddIcon className={classes.addIcon} />
-          Extended
-        </Fab> */}
+          New Bot
+        </Fab>
       </Card>
     </Grid>
   );
