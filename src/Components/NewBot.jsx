@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -14,6 +14,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
+import Alert from "@material-ui/lab/Alert";
 
 import fetchData from "../utils/fetchData";
 
@@ -53,22 +54,34 @@ const useStyles = makeStyles(theme => ({
   displayNone: {
     display: "none"
   },
-  transition : {
-    transition : "all 600ms"
+  transition: {
+    transition: "all 600ms"
+  },
+  alert: {
+    position: "absolute",
+    zIndex: 1,
+    margin: "0 auto",
+    minWidth: "100%"
   }
 }));
 
 const NewBot = () => {
   const [availableBots, setAvailableBots] = useState([]);
   const [form, setForm] = useState(false);
+  const [errors, setErrors] = useState([]);
 
   useEffect(() => {
+    setErrors([])
     fetchData("http://mm.mvsfans.org:10082/strategies/query/all", {
       //body
-    }).then(result => {
-      console.log(result);
-      setAvailableBots(result);
-    });
+    })
+      .then(result => {
+        console.log(result);
+        setAvailableBots(result);
+      })
+      .catch(error => {
+        setErrors([...errors, "Could not fetch Available Bots!"]);
+      });
     // fetch("http://localhost:3004/strategies", {
     //   method: "GET",
     //   headers: {
@@ -79,16 +92,23 @@ const NewBot = () => {
     //   .then(data => {
     //     setAvailableBots(data);
     //   });
-  }, []);
+  }, [errors]);
 
   useEffect(() => {
-    fetchData("http://mm.mvsfans.org:10082/strategies/query/all", {
-      //body
-    }).then(result => {
-      console.log(result);
-      setAvailableBots(result);
-    });
-  }, [form]);
+    setErrors([])
+    if (form) {
+      fetchData("http://mm.mvsfans.org:10082/strategies/query/all", {
+        //body
+      })
+        .then(result => {
+          console.log(result);
+          setAvailableBots(result);
+        })
+        .catch(error => {
+          setErrors([...errors, "Could not fetch Available Bots!"]);
+        });
+    }
+  }, [errors, form]);
 
   const classes = useStyles();
 
@@ -101,7 +121,20 @@ const NewBot = () => {
   return (
     <Grid item xs={12} md={4}>
       <Card className={`${classes.root} ${classes.relative}`}>
-        <CardActionArea className={`${classes.transition} ${form ? "" : classes.blur}`}>
+        {errors.length > 0
+          ? errors.map(err => (
+              <Alert
+                fullWidth
+                className={`${classes.root} ${classes.alert}`}
+                severity="error"
+              >
+                {err}
+              </Alert>
+            ))
+          : ""}
+        <CardActionArea
+          className={`${classes.transition} ${form ? "" : classes.blur}`}
+        >
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
               Start a New Bot
@@ -114,14 +147,16 @@ const NewBot = () => {
                 className={classes.marginBottom}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                // value={age}
+                value={""}
                 // onChange=
               >
-                {availableBots.map(bot => (
-                  <MenuItem value={bot.strategyId}>
-                    {bot.strategyDescription}
-                  </MenuItem>
-                ))}
+                {availableBots
+                  ? availableBots.map(bot => (
+                      <MenuItem key={bot.strategyId} value={bot.strategyId}>
+                        {bot.strategyDescription}
+                      </MenuItem>
+                    ))
+                  : ""}
               </Select>
               <TextField
                 className={classes.marginBottom}
@@ -169,6 +204,12 @@ const NewBot = () => {
               />
               <TextField
                 className={classes.marginBottom}
+                label="Min Amount"
+                id="standard-size-small"
+                size="small"
+              />
+              <TextField
+                className={classes.marginBottom}
                 label="Max Amount"
                 id="standard-size-small"
                 size="small"
@@ -188,11 +229,13 @@ const NewBot = () => {
             </FormControl>
           </CardContent>
         </CardActionArea>
-        <CardActions className={`${classes.transition} ${form ? "" : classes.blur}`}>
-          <Button size="small" color="primary">
+        <CardActions
+          className={`${classes.transition} ${form ? "" : classes.blur}`}
+        >
+          <Button onClick={submitNewBot} size="small" color="primary">
             Start
           </Button>
-          <Button size="small" color="red">
+          <Button onClick={() => setForm(false)} size="small" color="red">
             CANCEL
           </Button>
         </CardActions>

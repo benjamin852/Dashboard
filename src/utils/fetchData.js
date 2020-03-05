@@ -18,6 +18,7 @@ const fetchData = (URL, BODY) => {
     })
     .catch(err => {
       console.error("fetchData Error :\n", err.message);
+      throw err.message;
     });
 };
 
