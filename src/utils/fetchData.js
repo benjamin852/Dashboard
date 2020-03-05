@@ -17,7 +17,7 @@ const fetchData = (URL, BODY) => {
       return res;
     })
     .catch(err => {
-      console.error("Mehrad", err.message);
+      console.error("fetchData Error :\n", err.message);
     });
 };
 
