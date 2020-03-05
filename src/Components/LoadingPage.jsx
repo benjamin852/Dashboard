@@ -7,7 +7,7 @@ import NewBot from "./NewBot";
 import ReactLoading from "react-loading";
 
 const LoadingPage = props => {
-  const { loading = false } = props;
+  const loading = false;
 
   return (
     <Grid container wrap="nowrap">
@@ -16,12 +16,12 @@ const LoadingPage = props => {
       ) : (
         <div>
           <Skeleton variant="rect" width={210} height={118} />
-          <ReactLoading
+          {/* <ReactLoading
             type={"spinningBubbles"}
             color={"#476348"}
-            height={"20%"}
-            width={"20%"}
-          />
+            height={"5%"}
+            width={"5%"}
+          /> */}
           <NewBot />
         </div>
       )}

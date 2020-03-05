@@ -1,10 +1,10 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
-import LoadingPage from "./Components/LoadingPage";
+import Dashboard from "./Components/Dashboard";
 function App() {
   return (
     <Container maxWidth="lg">
-      <LoadingPage />
+      <Dashboard />
     </Container>
   );
 }
