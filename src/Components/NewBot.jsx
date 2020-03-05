@@ -71,7 +71,7 @@ const NewBot = () => {
   const [errors, setErrors] = useState([]);
 
   useEffect(() => {
-    setErrors([])
+    setErrors([]);
     fetchData("http://mm.mvsfans.org:10082/strategies/query/all", {
       //body
     })
@@ -92,10 +92,10 @@ const NewBot = () => {
     //   .then(data => {
     //     setAvailableBots(data);
     //   });
-  }, [errors]);
+  }, []);
 
   useEffect(() => {
-    setErrors([])
+    setErrors([]);
     if (form) {
       fetchData("http://mm.mvsfans.org:10082/strategies/query/all", {
         //body
@@ -108,7 +108,7 @@ const NewBot = () => {
           setErrors([...errors, "Could not fetch Available Bots!"]);
         });
     }
-  }, [errors, form]);
+  }, [form]);
 
   const classes = useStyles();
 

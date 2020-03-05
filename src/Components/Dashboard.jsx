@@ -37,22 +37,13 @@ const Dashboard = () => {
     );
   });
 
+  const testing = () => {
+    return <p>heyyy</p>;
+  };
+
   return (
     <Grid container spacing={2}>
-      {!loading ? (
-        renderedDashboardItems
-      ) : (
-        <>
-          <div>
-            <Skeleton variant="circle" width={40} height={40} />
-            <Skeleton variant="text" />
-            <Skeleton variant="rect" width={210} height={118} />
-            <Skeleton variant="rect" width={210} height={118} />
-            <Skeleton variant="rect" width={210} height={118} />
-          </div>
-          <NewBot />
-        </>
-      )}
+      {renderedDashboardItems}
     </Grid>
   );
 };

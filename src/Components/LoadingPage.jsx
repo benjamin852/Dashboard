@@ -11,19 +11,19 @@ const LoadingPage = props => {
 
   return (
     <Grid container wrap="nowrap">
-      {!loading ? (
-        <Dashboard />
-      ) : (
+      {loading ? (
         <div>
           <Skeleton variant="rect" width={210} height={118} />
           {/* <ReactLoading
-            type={"spinningBubbles"}
-            color={"#476348"}
-            height={"5%"}
-            width={"5%"}
-          /> */}
+          type={"spinningBubbles"}
+          color={"#476348"}
+          height={"5%"}
+          width={"5%"}
+        /> */}
           <NewBot />
         </div>
+      ) : (
+        <Dashboard />
       )}
       )
     </Grid>
