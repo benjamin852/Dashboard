@@ -7,6 +7,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import clsx from "clsx";
 
 import MetaverseImage from "../../assets/metaverse-image.jpg";
@@ -40,9 +41,9 @@ const useStyles = makeStyles(theme => ({
 const StartButton = withStyles(theme => ({
   root: {
     color: theme.palette.getContrastText(green[500]),
-    backgroundColor: green[500],
+    backgroundColor: green[200],
     "&:hover": {
-      backgroundColor: green[700]
+      backgroundColor: green[100]
     }
   }
 }))(Button);
@@ -50,7 +51,8 @@ const StartButton = withStyles(theme => ({
 const DashboardItem = props => {
   const [botState, setBotState] = useState(true);
   const [editState, setEditState] = useState(false);
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(false);
 
   const classes = useStyles();
 
@@ -64,25 +66,48 @@ const DashboardItem = props => {
   };
 
   const save = () => setEditState(false);
-  const stopBot = () => setBotState(false);
-  const startBot = () => {
+
+  const stopBot = async () => {
+    setButtonLoading(true);
+    setBotState(false);
+    const result = await fetchData(
+      "http://mm.mvsfans.org:10082/strategies/stop/dummy",
+      {
+        uuid: "dac947e4-ba20-4813-8c96-8e0b63d06e65",
+        cancelOrders: true
+      }
+    );
+    console.log(result, "stop");
+    if (result !== null || undefined) {
+      setButtonLoading(false);
+    }
+  };
+
+  const startBot = async () => {
+    setButtonLoading(true);
     setBotState(true);
-    fetchData("http://mm.mvsfans.org:10082/strategies/start/dummy", {
-      exchangeName: "biki",
-      apiKey: "104529b659e4e7227fb767e5d4b7a03f",
-      signature: "ba0eba924f87aaeeb9ebee07f0aa3714",
-      base: "DNA",
-      counter: "BTC",
-      pricePercentage: 0.2,
-      priceLever: 0,
-      minAmount: 1,
-      maxAmount: 3,
-      minSleepInterval: 10000,
-      maxSleepInterval: 20000,
-      retryTimes: 1
-    }).then(result => {
-      console.log(result);
-    });
+    const result = await fetchData(
+      "http://mm.mvsfans.org:10082/strategies/start/dummy",
+      {
+        exchangeName: "biki",
+        apiKey: "104529b659e4e7227fb767e5d4b7a03f",
+        signature: "ba0eba924f87aaeeb9ebee07f0aa3714",
+        base: "DNA",
+        counter: "BTC",
+        pricePercentage: 0.2,
+        priceLever: 0,
+        minAmount: 1,
+        maxAmount: 3,
+        minSleepInterval: 10000,
+        maxSleepInterval: 20000,
+        retryTimes: 1
+      }
+    );
+    console.log(result, "start");
+    if (result !== null || undefined) {
+      setButtonLoading(false);
+    }
+    return true;
   };
 
   return (
@@ -185,15 +210,35 @@ const DashboardItem = props => {
         <CardActions disableSpacing>
           {editState ? (
             <Button onClick={save} variant="contained" color="primary">
-              SAVE!
+              SAVE
             </Button>
           ) : botState ? (
             <Button onClick={stopBot} variant="contained" color="secondary">
-              STOP
+              {buttonLoading == false ? (
+                "STOP"
+              ) : (
+                <CircularProgress
+                  variant="determinate"
+                  value={100}
+                  className={classes.top}
+                  size={24}
+                  thickness={4}
+                />
+              )}
             </Button>
           ) : (
             <StartButton onClick={startBot} variant="contained">
-              START
+              {buttonLoading == false ? (
+                "START"
+              ) : (
+                <CircularProgress
+                  variant="determinate"
+                  value={100}
+                  className={classes.top}
+                  size={24}
+                  thickness={4}
+                />
+              )}
             </StartButton>
           )}
           <IconButton
@@ -203,7 +248,6 @@ const DashboardItem = props => {
             onClick={handleExpandClick}
             aria-expanded={expanded}
           >
-            {/* {expanded ? "Show Less" : "Show More"} */}
             <ExpandMoreIcon />
           </IconButton>
         </CardActions>
