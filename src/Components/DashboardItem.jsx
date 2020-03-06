@@ -19,12 +19,20 @@ import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { green } from "@material-ui/core/colors";
+import momnet from "moment";
+import moment from "moment";
 
 const useStyles = makeStyles(theme => ({
   root: {
     maxWidth: 345
   },
+  reportButton: {
+    marginLeft: "auto",
+    borderRadius : 5,
+    fontSize : 18,
+  },
   expand: {
+    borderRadius: 5,
     transform: "rotate(0deg)",
     marginLeft: "auto",
     transition: theme.transitions.create("transform", {
@@ -32,6 +40,7 @@ const useStyles = makeStyles(theme => ({
     })
   },
   expandOpen: {
+    borderRadius: 5,
     transform: "rotate(180deg)"
   },
   marginBottom: {
@@ -54,6 +63,7 @@ const DashboardItem = ({ botData }) => {
   const [editState, setEditState] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [report, setReport] = useState([]);
 
   const classes = useStyles();
 
@@ -63,6 +73,13 @@ const DashboardItem = ({ botData }) => {
   };
 
   const handleExpandClick = () => {
+    fetchData("http://mm.mvsfans.org:10082/api/strategies/query/report", {
+      uuid: botData.threadUuid,
+      startTimestamp: 1583038800,
+      endTimestamp: 1583209945
+    }).then(report => {
+      setReport(report);
+    });
     setExpanded(!expanded);
   };
 
@@ -297,6 +314,59 @@ const DashboardItem = ({ botData }) => {
               size="small"
               disabled={editState ? false : true}
             />
+            {!report ? (
+              ""
+            ) : (
+              <>
+                <hr />
+                <h4>
+                  REPORT : {report.base} / {report.counter}
+                </h4>
+                <div>
+                  <strong>Base Volume :</strong>
+                  <span>{report.baseVolume}</span>
+                </div>
+                <div>
+                  <strong>Counter Volume :</strong>
+                  <span>
+                    {report.counterVolume} {report.counter}
+                  </span>
+                </div>
+
+                <div>
+                  <strong>Base Commission :</strong>
+                  <span>
+                    {report.baseCommission} {report.base}
+                  </span>
+                </div>
+                <div>
+                  <strong>Counter Commission :</strong>
+                  <span>
+                    {report.CounterCommission} {report.counter}
+                  </span>
+                </div>
+                <div>
+                  <strong>Average Price :</strong>
+                  <span>{report.averagePrice}</span>
+                </div>
+                <div>
+                  <strong>Base Average Price :</strong>
+                  <span>
+                    {report.baseAveragePrice} {report.base}
+                  </span>
+                </div>
+                <div>
+                  <strong>Counter Average Price :</strong>
+                  <span>
+                    {report.counterAveragePrice} {report.counter}
+                  </span>
+                </div>
+                <div>
+                  <strong>Number of Transactions :</strong>
+                  <span>{report.numberOfTransactions}</span>
+                </div>
+              </>
+            )}
           </CardContent>
         </Collapse>
 
@@ -335,13 +405,16 @@ const DashboardItem = ({ botData }) => {
             </StartButton>
           )}
           <IconButton
-            className={clsx(classes.expand, {
-              [classes.expandOpen]: expanded
-            })}
+            className={classes.reportButton}
             onClick={handleExpandClick}
             aria-expanded={expanded}
           >
-            <ExpandMoreIcon />
+            Report{" "}
+            <ExpandMoreIcon
+              className={clsx(classes.expand, {
+                [classes.expandOpen]: expanded
+              })}
+            />
           </IconButton>
         </CardActions>
       </Card>
