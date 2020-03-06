@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import Avatar from "@material-ui/core/Avatar";
@@ -28,8 +28,8 @@ const useStyles = makeStyles(theme => ({
   },
   reportButton: {
     marginLeft: "auto",
-    borderRadius : 5,
-    fontSize : 18,
+    borderRadius: 5,
+    fontSize: 18
   },
   expand: {
     borderRadius: 5,
@@ -58,12 +58,17 @@ const StartButton = withStyles(theme => ({
   }
 }))(Button);
 
-const DashboardItem = ({ botData }) => {
+const DashboardItem = ({ botDataObj }) => {
   const [botState, setBotState] = useState(true);
+  const [botData, setBotData] = useState(botDataObj);
   const [editState, setEditState] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
   const [report, setReport] = useState([]);
+
+  useEffect(() => {
+    setBotData({ ...botDataObj });
+  }, [botDataObj]);
 
   const classes = useStyles();
 
@@ -83,48 +88,48 @@ const DashboardItem = ({ botData }) => {
     setExpanded(!expanded);
   };
 
+  const handleBotChange = e => {
+    if (e.target.value) {
+      let obj = {};
+      obj[e.target.id] = e.target.value;
+      setBotData({
+        ...botData,
+        threadConfig: { ...botData.threadConfig, ...obj }
+      });
+    }
+  };
+
   const save = () => setEditState(false);
 
   const stopBot = async () => {
     setButtonLoading(true);
-    setBotState(false);
-    const result = await fetchData(
-      "http://mm.mvsfans.org:10082/api/threads/query/status/all",
+
+    fetchData(
+      "http://mm.mvsfans.org:10082/api/strategies/stop/maker/order/book/near",
       {
-        uuid: "dac947e4-ba20-4813-8c96-8e0b63d06e65",
+        uuid: botData.threadUuid,
         cancelOrders: true
       }
-    );
-    console.log(result, "stop");
-    if (result !== null || undefined) {
+    ).then(result => {
+      console.log(result);
+      setBotState(false);
       setButtonLoading(false);
-    }
+    });
   };
 
   const startBot = async () => {
     setButtonLoading(true);
-    setBotState(true);
-    const result = await fetchData(
-      "http://mm.mvsfans.org:10082/strategies/start/dummy",
+
+    fetchData(
+      "http://mm.mvsfans.org:10082/api/strategies/start/maker/order/book/near",
       {
-        exchangeName: "biki",
-        apiKey: "104529b659e4e7227fb767e5d4b7a03f",
-        signature: "ba0eba924f87aaeeb9ebee07f0aa3714",
-        base: "DNA",
-        counter: "BTC",
-        pricePercentage: 0.2,
-        priceLever: 0,
-        minAmount: 1,
-        maxAmount: 3,
-        minSleepInterval: 10000,
-        maxSleepInterval: 20000,
-        retryTimes: 1
+        ...botData.threadConfig
       }
-    );
-    console.log(result, "start");
-    if (result !== null || undefined) {
+    ).then(result => {
+      setBotState(true);
       setButtonLoading(false);
-    }
+    });
+
     return true;
   };
 
@@ -214,6 +219,7 @@ const DashboardItem = ({ botData }) => {
               defaultValue={botData.threadConfig.followedExchangeName}
               size="small"
               disabled={editState ? false : true}
+              onChange={handleBotChange}
             />
             <TextField
               fullWidth
@@ -223,6 +229,7 @@ const DashboardItem = ({ botData }) => {
               defaultValue={botData.threadConfig.depth}
               size="small"
               disabled={editState ? false : true}
+              onChange={handleBotChange}
             />
             <TextField
               fullWidth
@@ -232,6 +239,7 @@ const DashboardItem = ({ botData }) => {
               defaultValue={botData.threadConfig.stages}
               size="small"
               disabled={editState ? false : true}
+              onChange={handleBotChange}
             />
             <TextField
               fullWidth
@@ -241,6 +249,7 @@ const DashboardItem = ({ botData }) => {
               defaultValue={botData.threadConfig.priceLever}
               size="small"
               disabled={editState ? false : true}
+              onChange={handleBotChange}
             />
             <TextField
               fullWidth
@@ -250,6 +259,7 @@ const DashboardItem = ({ botData }) => {
               defaultValue={botData.threadConfig.amountLever}
               size="small"
               disabled={editState ? false : true}
+              onChange={handleBotChange}
             />
             <TextField
               fullWidth
@@ -259,6 +269,7 @@ const DashboardItem = ({ botData }) => {
               defaultValue={botData.threadConfig.minSleepInterval}
               size="small"
               disabled={editState ? false : true}
+              onChange={handleBotChange}
             />
             <TextField
               fullWidth
@@ -268,6 +279,7 @@ const DashboardItem = ({ botData }) => {
               defaultValue={botData.threadConfig.maxSleepInterval}
               size="small"
               disabled={editState ? false : true}
+              onChange={handleBotChange}
             />
             <TextField
               fullWidth
@@ -277,6 +289,7 @@ const DashboardItem = ({ botData }) => {
               defaultValue={botData.threadConfig.minAmount}
               size="small"
               disabled={editState ? false : true}
+              onChange={handleBotChange}
             />
             <TextField
               fullWidth
@@ -286,6 +299,7 @@ const DashboardItem = ({ botData }) => {
               defaultValue={botData.threadConfig.maxAmount}
               size="small"
               disabled={editState ? false : true}
+              onChange={handleBotChange}
             />
             <TextField
               fullWidth
@@ -295,6 +309,7 @@ const DashboardItem = ({ botData }) => {
               defaultValue={botData.threadConfig.saveOrders}
               size="small"
               disabled={editState ? false : true}
+              onChange={handleBotChange}
             />
             <TextField
               fullWidth
@@ -304,6 +319,7 @@ const DashboardItem = ({ botData }) => {
               defaultValue={botData.threadConfig.askSpreadIndex}
               size="small"
               disabled={editState ? false : true}
+              onChange={handleBotChange}
             />
             <TextField
               fullWidth
@@ -313,6 +329,7 @@ const DashboardItem = ({ botData }) => {
               defaultValue={botData.threadConfig.bidSpreadIndex}
               size="small"
               disabled={editState ? false : true}
+              onChange={handleBotChange}
             />
             {!report ? (
               ""

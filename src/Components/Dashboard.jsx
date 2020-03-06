@@ -20,7 +20,10 @@ const Dashboard = () => {
 
   const renderedDashboardItems = allBotsData.map(singleBotData => {
     return (
-      <DashboardItem key={singleBotData.threadUuid} botData={singleBotData} />
+      <DashboardItem
+        key={singleBotData.threadUuid}
+        botDataObj={singleBotData}
+      />
     );
   });
 

@@ -1,9 +1,5 @@
 const fetchData = (URL, BODY) => {
-  var urlencoded = new URLSearchParams();
-  urlencoded.append("uuid", "dac947e4-ba20-4813-8c96-8e0b63d06e65");
-  for (const key in BODY) {
-    urlencoded.append(key, BODY[key]);
-  }
+  var urlencoded = new URLSearchParams(BODY);
 
   return fetch(URL, {
     method: "POST",
