@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -72,7 +72,7 @@ const NewBot = () => {
 
   useEffect(() => {
     setErrors([]);
-    fetchData("http://mm.mvsfans.org:10082/strategies/query/all", {
+    fetchData("http://mm.mvsfans.org:10082/api/strategies/query/all", {
       //body
     }).then(result => {
       console.log(result);
@@ -96,7 +96,7 @@ const NewBot = () => {
   useEffect(() => {
     setErrors([]);
     if (form) {
-      fetchData("http://mm.mvsfans.org:10082/strategies/query/all", {
+      fetchData("http://mm.mvsfans.org:10082/api/strategies/query/all", {
         //body
       }).then(result => {
         console.log(result);
@@ -114,13 +114,28 @@ const NewBot = () => {
     setForm(true);
   };
 
-  const submitNewBot = () => {};
+  const submitNewBot = async e => {
+    e.preventDefault();
+    let { followedExchangeName } = e.target.elements;
+    let reqBody = {};
+    let elements = e.target.elements;
+    Object.keys(elements).forEach(key => {
+      let element = elements[key];
+      let invalidElType = ["reset", "submit", "hidden", "button"];
+      if (!invalidElType.includes(element.type)) {
+        reqBody[element.id] = element.value;
+      }
+    });
+    console.log(reqBody)
+
+    console.log(e.target.elements);
+  };
 
   return (
     <Grid item xs={12} md={4}>
-      <form onSubmit={() => console.log("submit")}>
+      <form onSubmit={submitNewBot}>
         <Card className={`${classes.root} ${classes.relative}`}>
-          {errors.length > 0
+          {/* {errors.length > 0
             ? errors.map(err => (
                 <Alert
                   fullWidth
@@ -130,7 +145,7 @@ const NewBot = () => {
                   {err}
                 </Alert>
               ))
-            : ""}
+            : ""} */}
           <CardActionArea
             className={`${classes.transition} ${form ? "" : classes.blur}`}
           >
@@ -158,14 +173,14 @@ const NewBot = () => {
 
                 <TextField
                   className={classes.marginBottom}
-                  label="Retry Times"
-                  id="standard-size-small"
+                  label="Followed Exchange Name"
+                  id="followedExchangeName"
                   size="small"
                 />
                 <TextField
                   className={classes.marginBottom}
                   label="API Key"
-                  id="standard-size-small"
+                  id="apiKey"
                   defaultValue="104529b659e4e7227fb767e5d4b7a03f"
                   size="small"
                 />
@@ -173,55 +188,91 @@ const NewBot = () => {
                   className={classes.marginBottom}
                   label="Signature"
                   defaultValue="ba0eba924f87aaeeb9ebee07f0aa3714"
-                  id="standard-size-small"
+                  id="signature"
                   size="small"
                 />
                 <TextField
                   className={classes.marginBottom}
                   label="Price Lever"
-                  id="standard-size-small"
+                  id="priceLever"
                   size="small"
                 />
                 <TextField
                   className={classes.marginBottom}
                   label="Min Sleep Interval"
-                  id="standard-size-small"
+                  id="minSleepInterval"
                   size="small"
                 />
                 <TextField
                   className={classes.marginBottom}
                   label="Max Sleep Interval"
-                  id="standard-size-small"
+                  id="maxSleepInterval"
                   size="small"
                 />
                 <TextField
                   className={classes.marginBottom}
                   label="Exchange Name"
-                  id="standard-size-small"
+                  id="exchangeName"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
+                  label="Ask Spread Index"
+                  id="askSpreadIndex"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
+                  label="Amount Lever"
+                  id="amountLever"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
+                  label="Save Orders"
+                  id="saveOrders"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
+                  label="Depth"
+                  id="depth"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
+                  label="Stages"
+                  id="depth"
                   size="small"
                 />
                 <TextField
                   className={classes.marginBottom}
                   label="Min Amount"
-                  id="standard-size-small"
+                  id="minAmount"
                   size="small"
                 />
                 <TextField
                   className={classes.marginBottom}
                   label="Max Amount"
-                  id="standard-size-small"
+                  id="maxAmount"
                   size="small"
                 />
                 <TextField
                   className={classes.marginBottom}
                   label="Price Percentage"
-                  id="standard-size-small"
+                  id="pricePercentage"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
+                  label="Counter"
+                  id="counter"
                   size="small"
                 />
                 <TextField
                   className={classes.marginBottom}
                   label="Base"
-                  id="standard-size-small"
+                  id="base"
                   size="small"
                 />
               </FormControl>
@@ -230,10 +281,15 @@ const NewBot = () => {
           <CardActions
             className={`${classes.transition} ${form ? "" : classes.blur}`}
           >
-            <Button onClick={submitNewBot} size="small" color="primary">
+            <Button type="submit" size="small" color="primary">
               Start
             </Button>
-            <Button onClick={() => setForm(false)} size="small" color="red">
+            <Button
+              type="reset"
+              onClick={() => setForm(false)}
+              size="small"
+              color="red"
+            >
               CANCEL
             </Button>
           </CardActions>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import Avatar from "@material-ui/core/Avatar";
@@ -69,7 +69,7 @@ const DashboardItem = props => {
     setButtonLoading(true);
     setBotState(false);
     const result = await fetchData(
-      "http://mm.mvsfans.org:10082/strategies/stop/dummy",
+      "http://mm.mvsfans.org:10082/api/threads/query/status/all",
       {
         uuid: "dac947e4-ba20-4813-8c96-8e0b63d06e65",
         cancelOrders: true
@@ -212,7 +212,7 @@ const DashboardItem = props => {
             </Button>
           ) : botState ? (
             <Button onClick={stopBot} variant="contained" color="secondary">
-              {buttonLoading == false ? (
+              {buttonLoading === false ? (
                 "STOP"
               ) : (
                 <CircularProgress
@@ -226,7 +226,7 @@ const DashboardItem = props => {
             </Button>
           ) : (
             <StartButton onClick={startBot} variant="contained">
-              {buttonLoading == false ? (
+              {buttonLoading === false ? (
                 "START"
               ) : (
                 <CircularProgress
