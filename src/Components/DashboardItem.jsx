@@ -1,35 +1,44 @@
 import React, { useState, useEffect } from "react";
+import fetchData from "../utils/fetchData";
+import clsx from "clsx";
+
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import Avatar from "@material-ui/core/Avatar";
 import CardActions from "@material-ui/core/CardActions";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import clsx from "clsx";
-
-import MetaverseImage from "../assets/metaverse-image.jpg";
 import TextField from "@material-ui/core/TextField";
 import Collapse from "@material-ui/core/Collapse";
 import Grid from "@material-ui/core/Grid";
-import fetchData from "../utils/fetchData";
-import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
+
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { green } from "@material-ui/core/colors";
-import momnet from "moment";
-import moment from "moment";
+import Spellcheck from "@material-ui/icons/Spellcheck";
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import PlayArrow from '@material-ui/icons/PlayArrow';
+import PanTool from '@material-ui/icons/PanTool';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    maxWidth: 345
+    "& label.MuiFormLabel-root.Mui-disabled": {
+      fontSize: 22,
+      color: "#8a9696"
+    },
+    maxWidth: 345,
+    backgroundColor: "#d3cbbd",
+    color: "#2d2d2d",
+    boxShadow: "none",
+    fontFamily : 'PT Sans Narrow'
+    // border : "1px solid #9a958f",
   },
   reportButton: {
     marginLeft: "auto",
     borderRadius: 5,
-    fontSize: 18
+    fontSize: 18,
+    color: theme.palette.getContrastText("#9a958f")
   },
   expand: {
     borderRadius: 5,
@@ -44,16 +53,59 @@ const useStyles = makeStyles(theme => ({
     transform: "rotate(180deg)"
   },
   marginBottom: {
-    marginBottom: 5
+    "& > label, &.Mui-disabled > label": {
+      fontSize: 17,
+      color: "#c14677",
+      fontFamily : 'PT Sans Narrow'
+    },
+    "& input" : {
+      color : "#4d4d4d",
+      
+    },
+    "& div:after,& div:before" : {
+      borderBottom: "0 none"
+    },
+    marginBottom: 5,
+    borderBottom: "none",
+    fontFamily : 'PT Sans Narrow !important',
+    fontSize : 14,
+  },
+  avatar: {
+    fontSize: 45,
+    backgroundColor: "transparent",
+    fontFamily: "Bungee Inline",
+    color: "#2c6c83"
+  },
+  pencil: {
+    '&:hover' : {
+      color : "#4d4229"
+    },
+    backgroundColor: "transparent",
+    color: "#9e937d",
+    padding: 3,
+    borderRadius : 3,
+    fontSize : 17,
+    marginTop : 10
   }
 }));
 
 const StartButton = withStyles(theme => ({
   root: {
-    color: theme.palette.getContrastText(green[500]),
-    backgroundColor: green[200],
+    color: theme.palette.getContrastText("#3d938b"),
+    fontFamily : 'PT Sans Narrow',
+    backgroundColor: "#3d938b",
     "&:hover": {
-      backgroundColor: green[100]
+      backgroundColor: "#3c896b"
+    }
+  }
+}))(Button);
+const StopButton = withStyles(theme => ({
+  root: {
+    fontFamily : 'PT Sans Narrow',
+    color: theme.palette.getContrastText("#98515f"),
+    backgroundColor: "#98515f",
+    "&:hover": {
+      backgroundColor: "#c8515f"
     }
   }
 }))(Button);
@@ -114,6 +166,7 @@ const DashboardItem = ({ botDataObj }) => {
       console.log(result);
       setBotState(false);
       setButtonLoading(false);
+      setBotData({ ...botData, threadIsRunning: false });
     });
   };
 
@@ -139,10 +192,18 @@ const DashboardItem = ({ botDataObj }) => {
         className={`${classes.root} ${botState ? "bot-running" : "bot-paused"}`}
       >
         <CardHeader
-          avatar={<Avatar aria-label="recipe">{botData.threadStrategy}</Avatar>}
+          avatar={
+            <Avatar className={classes.avatar} aria-label="recipe">
+              {botData.threadStrategy}
+            </Avatar>
+          }
           action={
             !editState ? (
-              <EditIcon fontSize="small" onClick={editStrategy} />
+              <Spellcheck
+                className={classes.pencil}
+                fontSize="small"
+                onClick={editStrategy}
+              />
             ) : null
           }
           titleTypographyProps={{ variant: "h5" }}
@@ -389,11 +450,11 @@ const DashboardItem = ({ botDataObj }) => {
 
         <CardActions disableSpacing>
           {editState ? (
-            <Button onClick={save} variant="contained" color="primary">
+            <Button startIcon={<CloudUploadIcon />} onClick={save} variant="contained" color="primary">
               SAVE
             </Button>
           ) : botData.threadIsRunning ? (
-            <Button onClick={stopBot} variant="contained" color="secondary">
+            <StopButton startIcon={<PanTool />} onClick={stopBot} variant="contained">
               {buttonLoading === false ? (
                 "STOP"
               ) : (
@@ -405,9 +466,9 @@ const DashboardItem = ({ botDataObj }) => {
                   thickness={4}
                 />
               )}
-            </Button>
+            </StopButton>
           ) : (
-            <StartButton onClick={startBot} variant="contained">
+            <StartButton startIcon={<PlayArrow />} onClick={startBot} variant="contained">
               {buttonLoading === false ? (
                 "START"
               ) : (

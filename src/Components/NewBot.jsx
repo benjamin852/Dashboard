@@ -20,7 +20,8 @@ import fetchData from "../utils/fetchData";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    maxWidth: 345
+    maxWidth: 345,
+    backgroundColor : "#9A958f"
   },
   margin: {
     margin: theme.spacing(1)
