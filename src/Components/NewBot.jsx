@@ -126,7 +126,14 @@ const NewBot = () => {
         reqBody[element.id] = element.value;
       }
     });
-    console.log(reqBody)
+    console.log(reqBody);
+
+    fetchData(
+      "http://mm.mvsfans.org:10082/api/strategies/start/maker/order/book/near",
+      {
+        ...reqBody
+      }
+    ).then(console.log);
 
     console.log(e.target.elements);
   };
@@ -173,8 +180,8 @@ const NewBot = () => {
 
                 <TextField
                   className={classes.marginBottom}
-                  label="Followed Exchange Name"
-                  id="followedExchangeName"
+                  label="Exchange Name"
+                  id="exchangeName"
                   size="small"
                 />
                 <TextField
@@ -193,8 +200,45 @@ const NewBot = () => {
                 />
                 <TextField
                   className={classes.marginBottom}
+                  label="Base"
+                  id="base"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
+                  label="Counter"
+                  id="counter"
+                  size="small"
+                />
+
+                <TextField
+                  className={classes.marginBottom}
+                  label="Followed Exchange Name"
+                  id="followedExchangeName"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
+                  label="Depth"
+                  id="depth"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
+                  label="Stages"
+                  id="stages"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
                   label="Price Lever"
                   id="priceLever"
+                  size="small"
+                />
+                <TextField
+                  className={classes.marginBottom}
+                  label="Amount Lever"
+                  id="amountLever"
                   size="small"
                 />
                 <TextField
@@ -211,42 +255,6 @@ const NewBot = () => {
                 />
                 <TextField
                   className={classes.marginBottom}
-                  label="Exchange Name"
-                  id="exchangeName"
-                  size="small"
-                />
-                <TextField
-                  className={classes.marginBottom}
-                  label="Ask Spread Index"
-                  id="askSpreadIndex"
-                  size="small"
-                />
-                <TextField
-                  className={classes.marginBottom}
-                  label="Amount Lever"
-                  id="amountLever"
-                  size="small"
-                />
-                <TextField
-                  className={classes.marginBottom}
-                  label="Save Orders"
-                  id="saveOrders"
-                  size="small"
-                />
-                <TextField
-                  className={classes.marginBottom}
-                  label="Depth"
-                  id="depth"
-                  size="small"
-                />
-                <TextField
-                  className={classes.marginBottom}
-                  label="Stages"
-                  id="depth"
-                  size="small"
-                />
-                <TextField
-                  className={classes.marginBottom}
                   label="Min Amount"
                   id="minAmount"
                   size="small"
@@ -259,20 +267,20 @@ const NewBot = () => {
                 />
                 <TextField
                   className={classes.marginBottom}
-                  label="Price Percentage"
-                  id="pricePercentage"
+                  label="Save Orders"
+                  id="saveOrders"
                   size="small"
                 />
                 <TextField
                   className={classes.marginBottom}
-                  label="Counter"
-                  id="counter"
+                  label="Ask Spread Index"
+                  id="askSpreadIndex"
                   size="small"
                 />
                 <TextField
                   className={classes.marginBottom}
-                  label="Base"
-                  id="base"
+                  label="Bid Spread Index"
+                  id="bidSpreadIndex"
                   size="small"
                 />
               </FormControl>
