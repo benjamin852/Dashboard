@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -14,7 +14,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import Alert from "@material-ui/lab/Alert";
+// import Alert from "@material-ui/lab/Alert";
 
 import fetchData from "../utils/fetchData";
 
@@ -68,10 +68,9 @@ const useStyles = makeStyles(theme => ({
 const NewBot = () => {
   const [availableBots, setAvailableBots] = useState([]);
   const [form, setForm] = useState(false);
-  const [errors, setErrors] = useState([]);
+  // const [errors, setErrors] = useState([]);
 
   useEffect(() => {
-    setErrors([]);
     fetchData("http://mm.mvsfans.org:10082/api/strategies/query/all", {
       //body
     }).then(result => {
@@ -94,7 +93,6 @@ const NewBot = () => {
   }, []);
 
   useEffect(() => {
-    setErrors([]);
     if (form) {
       fetchData("http://mm.mvsfans.org:10082/api/strategies/query/all", {
         //body
@@ -116,7 +114,6 @@ const NewBot = () => {
 
   const submitNewBot = async e => {
     e.preventDefault();
-    let { followedExchangeName } = e.target.elements;
     let reqBody = {};
     let elements = e.target.elements;
     Object.keys(elements).forEach(key => {
@@ -296,7 +293,7 @@ const NewBot = () => {
               type="reset"
               onClick={() => setForm(false)}
               size="small"
-              color="red"
+              color="secondary"
             >
               CANCEL
             </Button>

@@ -1,34 +1,21 @@
 import React, { useState, useEffect } from "react";
 import DashboardItem from "./DashboardItem";
 import Grid from "@material-ui/core/Grid";
-// import Skeleton from "@material-ui/lab/Skeleton";
-
-// import ReactLoading from "react-loading";
+import fetchData from "../utils/fetchData";
 
 import NewBot from "./NewBot";
 
 const Dashboard = () => {
   const [allBotsData, setAllBotsData] = useState([]);
-  const [loading, setloading] = useState(false);
+  // const [loading, setloading] = useState(false);
 
   useEffect(() => {
-    // fetchData("http://localhost:3000/threads", {}).then(result => {
-    //   console.log(result);
-    // });
-    setloading(true);
-    fetch("http://localhost:3004/threads", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        setAllBotsData(data);
-        setTimeout(() => {
-          setloading(false);
-        }, 10000);
-      });
+    fetchData(
+      "http://mm.mvsfans.org:10082/api/threads/query/status/all",
+      {}
+    ).then(bots => {
+      setAllBotsData(bots);
+    });
   }, []);
 
   const renderedDashboardItems = allBotsData.map(singleBotData => {
@@ -36,10 +23,6 @@ const Dashboard = () => {
       <DashboardItem key={singleBotData.threadUuid} botData={singleBotData} />
     );
   });
-
-  const testing = () => {
-    return <p>heyyy</p>;
-  };
 
   return (
     <Grid container spacing={2}>

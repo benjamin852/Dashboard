@@ -33,6 +33,9 @@ const useStyles = makeStyles(theme => ({
   },
   expandOpen: {
     transform: "rotate(180deg)"
+  },
+  marginBottom: {
+    marginBottom: 5
   }
 }));
 
@@ -46,7 +49,7 @@ const StartButton = withStyles(theme => ({
   }
 }))(Button);
 
-const DashboardItem = props => {
+const DashboardItem = ({ botData }) => {
   const [botState, setBotState] = useState(true);
   const [editState, setEditState] = useState(false);
   const [expanded, setExpanded] = useState(false);
@@ -114,40 +117,72 @@ const DashboardItem = props => {
         className={`${classes.root} ${botState ? "bot-running" : "bot-paused"}`}
       >
         <CardHeader
-          avatar={<Avatar aria-label="recipe">123</Avatar>}
-          action={!editState ? <EditIcon onClick={editStrategy} /> : null}
+          avatar={<Avatar aria-label="recipe">{botData.threadStrategy}</Avatar>}
+          action={
+            !editState ? (
+              <EditIcon fontSize="small" onClick={editStrategy} />
+            ) : null
+          }
           titleTypographyProps={{ variant: "h5" }}
-          title="--Bot ID--"
-          subheader={`Bot ID: ${props.botData.threadUuid}`}
+          title={`${botData.threadConfig.base} / ${botData.threadConfig.counter}`}
+          subheader={`${botData.threadUuid}`}
         />
-        <CardMedia
+        {/* <CardMedia
           component="img"
           alt="Crypto Dashboard"
           height="140"
           image={MetaverseImage}
           title="Contemplative Reptile"
-        />
+        /> */}
         <CardContent>
           <TextField
             fullWidth
-            defaultValue={`Thread Strategy: ${props.botData.threadStrategy}`}
+            className={classes.marginBottom}
+            label="Exchange Name"
+            id="exchangeName"
+            size="small"
+            defaultValue={botData.threadConfig.exchangeName}
             disabled={editState ? false : true}
           />
-          <br />
-          <br />
           <TextField
             fullWidth
-            multiline
-            defaultValue={`Trading Since: ${props.botData.threadStartTime}`}
+            className={classes.marginBottom}
+            label="API Key"
+            id="apiKey"
+            defaultValue={botData.threadConfig.apiKey}
+            size="small"
             disabled={editState ? false : true}
           />
-          <br />
-          <br />
           <TextField
             fullWidth
-            defaultValue={`End Time: ${
-              props.threadEndTime ? props.threadEndTime : `Ongoing Bot`
-            }`}
+            className={classes.marginBottom}
+            label="Signature"
+            defaultValue={botData.threadConfig.signature}
+            id="signature"
+            size="small"
+            disabled={editState ? false : true}
+          />
+
+          <TextField
+            fullWidth
+            className={classes.marginBottom}
+            id="threadStartTime"
+            size="small"
+            label="Trading Since"
+            defaultValue={new Date(botData.threadStartTime)}
+            disabled={editState ? false : true}
+          />
+          <TextField
+            fullWidth
+            className={classes.marginBottom}
+            size="small"
+            id="threadEndTime"
+            label="End Time"
+            defaultValue={
+              botData.threadEndTime
+                ? new Date(botData.threadEndTime)
+                : `Ongoing Bot`
+            }
             disabled={editState ? false : true}
           />
         </CardContent>
@@ -156,50 +191,110 @@ const DashboardItem = props => {
           <CardContent>
             <TextField
               fullWidth
-              defaultValue={`Min Sleep Interval: ${props.botData.threadConfig.minSleepInterval}`}
-              disabled={editState ? false : true}
-            />{" "}
-            <br />
-            <br />
-            <TextField
-              fullWidth
-              defaultValue={`Max Sleep Interval: ${props.botData.threadConfig.maxSleepInterval}`}
+              className={classes.marginBottom}
+              label="Followed Exchange Name"
+              id="followedExchangeName"
+              defaultValue={botData.threadConfig.followedExchangeName}
+              size="small"
               disabled={editState ? false : true}
             />
-            <br />
-            <br />
             <TextField
               fullWidth
-              defaultValue={`Exchange Name: ${props.botData.threadConfig.exchangeName}`}
+              className={classes.marginBottom}
+              label="Depth"
+              id="depth"
+              defaultValue={botData.threadConfig.depth}
+              size="small"
               disabled={editState ? false : true}
             />
-            <br />
-            <br />
             <TextField
               fullWidth
-              defaultValue={`Counter: ${props.botData.threadConfig.counter}`}
+              className={classes.marginBottom}
+              label="Stages"
+              id="stages"
+              defaultValue={botData.threadConfig.stages}
+              size="small"
               disabled={editState ? false : true}
             />
-            <br />
-            <br />
             <TextField
               fullWidth
-              defaultValue={`Base: ${props.botData.threadConfig.base}`}
+              className={classes.marginBottom}
+              label="Price Lever"
+              id="priceLever"
+              defaultValue={botData.threadConfig.priceLever}
+              size="small"
               disabled={editState ? false : true}
             />
-            <br />
-            <br />
             <TextField
               fullWidth
-              defaultValue={`Max Amount: ${props.botData.threadConfig.maxAmount}`}
+              className={classes.marginBottom}
+              label="Amount Lever"
+              id="amountLever"
+              defaultValue={botData.threadConfig.amountLever}
+              size="small"
               disabled={editState ? false : true}
             />
-            <br />
-            <br />
             <TextField
               fullWidth
-              defaultValue={`Price Percentage: ${props.botData.threadConfig
-                .pricePercentage * 100}%`}
+              className={classes.marginBottom}
+              label="Min Sleep Interval"
+              id="minSleepInterval"
+              defaultValue={botData.threadConfig.minSleepInterval}
+              size="small"
+              disabled={editState ? false : true}
+            />
+            <TextField
+              fullWidth
+              className={classes.marginBottom}
+              label="Max Sleep Interval"
+              id="maxSleepInterval"
+              defaultValue={botData.threadConfig.maxSleepInterval}
+              size="small"
+              disabled={editState ? false : true}
+            />
+            <TextField
+              fullWidth
+              className={classes.marginBottom}
+              label="Min Amount"
+              id="minAmount"
+              defaultValue={botData.threadConfig.minAmount}
+              size="small"
+              disabled={editState ? false : true}
+            />
+            <TextField
+              fullWidth
+              className={classes.marginBottom}
+              label="Max Amount"
+              id="maxAmount"
+              defaultValue={botData.threadConfig.maxAmount}
+              size="small"
+              disabled={editState ? false : true}
+            />
+            <TextField
+              fullWidth
+              className={classes.marginBottom}
+              label="Save Orders"
+              id="saveOrders"
+              defaultValue={botData.threadConfig.saveOrders}
+              size="small"
+              disabled={editState ? false : true}
+            />
+            <TextField
+              fullWidth
+              className={classes.marginBottom}
+              label="Ask Spread Index"
+              id="askSpreadIndex"
+              defaultValue={botData.threadConfig.askSpreadIndex}
+              size="small"
+              disabled={editState ? false : true}
+            />
+            <TextField
+              fullWidth
+              className={classes.marginBottom}
+              label="Bid Spread Index"
+              id="bidSpreadIndex"
+              defaultValue={botData.threadConfig.bidSpreadIndex}
+              size="small"
               disabled={editState ? false : true}
             />
           </CardContent>
@@ -210,7 +305,7 @@ const DashboardItem = props => {
             <Button onClick={save} variant="contained" color="primary">
               SAVE
             </Button>
-          ) : botState ? (
+          ) : botData.threadIsRunning ? (
             <Button onClick={stopBot} variant="contained" color="secondary">
               {buttonLoading === false ? (
                 "STOP"
